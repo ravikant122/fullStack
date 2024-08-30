@@ -1,0 +1,214 @@
+Why we need a Framework like react or Vue, why can't we work with JS alone
+1. DOM manipulation is very hard and lengthy with JS
+2. In Dynamic websites, only a little bit of HTML is there and we change/inject lot of HTML using JS
+now to inject it efficiently, we first calculate the diff between current HTML and new HTML and only update
+whats needed and where its needed
+now if we use JS then its a long code to first change some values and calculate difference and then update in the DOM
+and with react/vue, we just have to change the values, react/vue itself calculate the difference and then update the DOM
+
+
+How to create Project
+  1. npx create-react-app <project_name> (no need to update create-react-app)
+
+  or
+
+  2. npm install create-react-app -g (install create-react-app globally)
+  create-react-app <project_name> (then create project)
+  (project with npm is we've to keep updating create-react-app when its installed globally)
+
+  or
+
+  3. use vite - npm create vite@latest
+
+How to run the project
+  npm run dev (npm run to see all the options available to run)
+
+Folder structure
+  there's only one file - /public/index.html - we only see this file means there's only one html
+  and there's only one js file - src/index.js - this index.js access the root(div of id root) element in index.html
+  and then render the src/App.js in this root element and with routing we change the component in App.js
+  that's why its called single page application (SPA)
+
+
+when we create project using create-react-app, How index.html and index.js are linked when there's no script tag in index.html
+  when we run npm start - it start the project - and a file gets run npm/react-scripts/start.js
+  this start.js calls react-scripts/config/webpack.config.js 
+  this webpack link the index.html and index.js file
+  read this - https://medium.com/@pradumnabajoria/how-does-index-js-run-in-a-react-app-fc9ca20001c8
+  
+when we create project using vite - in index.html file index.js is linked
+
+React is a library, Vue and Angular are Framework
+library focuses on one thing, react focuses have only UI 
+Framework is like a set of things, Vue has all things like UI, router, i18n etc.
+so for react, we have to adopt 3rd party libs for like router, i18n etc.
+
+
+Imp Concepts of React
+1. we can only return a single parent from a JSX component but why
+return (
+  // here we need to return a single parent means we can't return two heading, we've to wrap them in some div
+  // or some Fragment(like a template in vue)
+  <div>
+    <h1>{props.title}</h1>
+    <h2>{props.description}</h2>
+  </div>
+  /*
+    <Fragment>
+      <h1>{props.title}</h1>
+      <h2>{props.description}</h2>
+    </Fragment> 
+
+    <>  // we can just write <> 
+      <h1>{props.title}</h1>
+      <h2>{props.description}</h2>
+    </> 
+    */
+  // but the main point is, JSX(Java script XML) function should have a single parent or we can return a single tag
+);
+because the <div> or <h1> or any tag we use JSX is not HTML tag, its a react tag that will be converted to
+React.createElement('<element>', null, <elements_value>)
+for ex: <span>Hello</span> = React.createElement('span', null, 'Hello')
+for nested elements like
+<div>
+  <h1>{props.title}</h1>
+  <h2>{props.description}</h2>
+</div>
+this is equal to
+React.createElement('div', null, React.createElement('h1', null, 'title1'), React.createElement('h2', null, 'title2'))
+now if we've to return above line from a JS function, we can only return one of this type
+because JS functions can return single item
+
+if we have something like this
+return (
+  <h1>{props.title}</h1>
+  <h2>{props.description}</h2>
+)
+then it will be converted to - React.createElement('h1', null, 'title1'), React.createElement('h2', null,'title2')
+and we can't return two values from a JS function
+
+
+2. When a parent gets re-rendered then all its child gets re-rendered
+React does to you know, syncing state and props between parent and all of its child
+A parents gets re-rendered when the state which is declared in it changes
+now all child will get re-rendered no matter if they are using that state or not
+for ex:
+function App() {
+  const [title, setTitle] = useState(0);
+
+  return (
+    <button onclick={setTitle(title + 'a')} />
+    <ShowTitle title={title} />
+    <ShowTitle title="ravi" />
+  )
+}
+function ShowTitle(props) {
+  return <h1>{props.title}</h1>
+}
+
+when we click on button, it changes the title, now both <ShowTitle> will be re-rendered even though second <ShowTitle>
+isn't using the state that is changed
+
+To optimize the components, we can use React.memo() - a hook
+this will prevent from re-rendering if componets doesn't use the state that is changed
+we can use it like this
+
+const ShowTitle = React.memo(function (props) {
+  return <h1>{props.title}</h1>
+})
+
+one more thing, if a child changes a prop, which is being used by the parent
+then both child and parent get re-rendered and yeah if parents gets re-rendered then all its child which doesn't use memo will get rendered
+
+
+3. why we need key prop when we iterate an array
+let's say we have a array ['apple', 'orange', 'grapes', 'bnanan']
+now we are showing this using <ul> and <li>
+function App() {
+  return (
+    <div>
+      <ul>
+        <li key={null}>apple</li>
+        <li key={null}>orange</li>
+        <li key={null}>grapes</li>
+        <li key={null}>bnanan</li>
+      </ul>
+    </div>
+  )
+}
+now after some time list is something like 
+<li key={null}>apple</li>
+<li key={null}>orange</li>
+<li key={null}>bnanan</li>
+here react's gonna guesses that it could be either 'grapes' was removed or 'bnanan' is removed and 'grape' is changed to 'bnanan'
+this is a very simple change in the array, but real life changes could be much more and many elements can have changes
+
+but with the key
+<li key="apple">apple</li>
+<li key="orange">orange</li>
+<li key="grapes">grapes</li>
+<li key="bnanan">bnanan</li>
+
+if our list becomes this 
+<li key="apple">apple</li>
+<li key="orange">orange</li>
+<li key="bnanan">bnanan</li>
+then we can detect that grapes was removed, so here react will just remove the grape and other li remain as it is
+react compares the before and after using virtual DOM tree that it maintains thoughout the component's life
+
+
+4. why my component get re-rendered twice
+this happens because of React.StrictMode(look in the main.jsx), good news it does only in development mode
+means in dev mode, we will call each API twice but not in production it calls an API only once
+
+
+5. Side effects and Hooks
+Side effects are the things in your components other than re-rendering like data fetching or interacting with browser 
+using setTimeout or setInterval or something
+
+Hooks allows to use the state and lifecycle methods without using Class in React(old way to write components)
+
+6. why we can't use async function inside useEffect
+means why can't we do it like this
+useEffect(async () => {
+  const { data} = await axios.get('some url');
+}, [])
+
+the async function returns a promise and useEffect doesn't want that, it either expects a function or nothing
+learn more about it
+
+but for now we can do it like this
+useEffect(() => {
+  async fetchData () {
+    const { data } = await axios.get('some url');
+    return data;
+  }
+  fetchData()
+}, [])
+
+7. import and export
+a.if there are multiple things you want to export then we can use - export const
+export function fun1() {...}
+export const a = 1;
+export const b = 2;
+we can also write it like this
+function fun1() {...}
+const a = 1;
+const b = 2;
+export { fun1, a, b }
+
+now we can import them like this
+import { fun1, a, c } from "./MyComponent"
+
+b. there's one more thing - export default - its the default export of the file, it can be only one in that file
+export default function fun1 () {...}
+export const a = 1;
+export const b = 2;
+we can import them like this
+import fun1, {a,b} from './MyComponent' 
+
+and if a file have only one export and that is default, then we can import like
+import fun1 from './MyComponent'
+
+its not neccessary to import by same name that we've used in export default, we can also do this
+import funfun from './MyComponent'

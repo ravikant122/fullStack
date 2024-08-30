@@ -1,0 +1,38 @@
+nodejs is a runtime for JS - something that can compile and run JS
+that's not a lang or framework, its a runtime that can compiler and run JS
+one more thing, we also have some extra things in nodejs that is build on top of V8
+
+most widely used use case of nodejs is to create HTTP server to create backend to talk to frontend
+HTTP is the protocol that let frontend and backend communicate
+
+frontend = client
+backend = server
+
+client sends HTTP protocol(http/https) with URL and route, headers/cookies, body, method
+https://chat.openai.com/backend-api/conversation
+https = protocol
+chat.openai.com = URL
+/backend-api/conversation = route
+
+method can be GET, POST, PUT, DELETE etc.
+
+headers contains general info like user info or cookies
+
+HTTP server recives this request and then sends
+1. response headers
+2. response body - data to be used by the client with error if any
+3. status code - 200(ok), 500(Internal server error)
+
+we can create a HTTP server using express, and its a server means it is backend
+
+nvm = node version manager - to manager diff versions on a machine if diff projects use diff node versions
+
+to install a package - npm install <package_name>
+
+Request methods
+1. GET - to fetch some info
+2. POST - to save something
+3. PUT - to update something
+4. DELETE - to delete something
+
+

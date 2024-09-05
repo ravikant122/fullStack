@@ -212,3 +212,26 @@ import fun1 from './MyComponent'
 
 its not neccessary to import by same name that we've used in export default, we can also do this
 import funfun from './MyComponent'
+
+8. React without JSX
+Each JSX element is just syntactic sugar for calling React.createElement(component, props, ...children). So, anything you can do with JSX can also be done with just plain JavaScript.
+
+For example, this code written with JSX:
+  class Hello extends React.Component {
+    render() {
+      return <div>Hello {this.props.toWhat}</div>;
+    }
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<Hello toWhat="World" />);
+
+it can be compiled to this code that does not use JSX:
+  class Hello extends React.Component {
+    render() {
+      return React.createElement('div', null, `Hello ${this.props.toWhat}`);
+    }
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(React.createElement(Hello, {toWhat: 'World'}, null));

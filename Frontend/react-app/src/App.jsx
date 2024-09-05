@@ -10,13 +10,14 @@
 // import ContextApi from "./components/props and state/ContentAPI/ContextAPI";
 // import Counter from "./components/props and state/State Manangement/Counter";
 import { RecoilRoot } from "recoil";
-import Network from "./components/props and state/State Manangement/Network";
+// import Network from "./components/props and state/State Manangement/Network";
+import CleanUpUseEffect from "./components/hooks/CleanUpUseEffect";
 
 function App() {
   return (
     <div>
       <RecoilRoot>
-        <Network />
+        <CleanUpUseEffect />
       </RecoilRoot>
     </div>
   );

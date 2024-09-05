@@ -35,4 +35,62 @@ Request methods
 3. PUT - to update something
 4. DELETE - to delete something
 
+SQL vs NoSQL
+Nosql - schemaless means there's no defined tables or no constaints on data type
+      - dev can put anytype of data in the table, even add new columns anytype
+      - benifit is this supports Array and object datatype - so we can store these for a value
+      - the chances of curruption are very high - no very used in real and big projects
+      - if you've to build something in very short time, use this as we have no restrictions in this
+we can define schema with moongoose but that's at nodejs level, if someone can enter data from somewhere else like mongodbCompass
+then that schema is of no use because that was defined at nodejs, that's why scheme should be define in db
 
+sql - we need to first define tables and constaints on datatype
+    - very strict
+    - no chances of curruption
+    - downside - any time we change the schema we need to migrate the database(meaning tell the data to update the schema, its little bit costly)
+
+connection string to connect to db - postgresql://username:password@host/db
+in terminal - psql -h <host> -p <port> -u <username> -d <database>
+
+SQL injection
+if we run this query
+username = req.body.username; 
+`SELECT * from users where username = '${username}'`
+and if user put its username = ip'; DROP table users; --
+the query will become
+SELECT * from users where username = 'ip'; DROP table users; -- ' 
+anything comes after -- is comment
+SELECT * from users where username = 'ip'; DROP table users;
+now we don't want that
+
+Parameterized query to prevent sql injection
+if we parameterized the query
+SELECT * from users where username = $1
+and give the parameter are ["ip'; DROP table users; --"]
+now first database will identify the type of command which is select, so it will only run select query
+at last it will insert the values and query becomes
+SELECT * from users where username = "ip'; DROP table users; --";
+
+Postgres
+1. superadmin user is postgres(will always available)
+2. so if you don't have user or don't know password, always give username = postgres and password = when you were installing postgres
+3. psql -u <username> -l  => lists all the databases for that user
+
+Prisma - ORM to query database
+disadv of postgresql
+1. we've to write queries
+2. migration is hard, we've to again write queries to change schema and we cannot log it
+3. its a db provider means when we switch to some other provider like mongodb etc., we've to change code 
+
+benifit of prisma
+1. we've functions here which implicitly write the queries
+2. we can log queries which ran when we execute a functions
+3. we can easily migrate using prisma and it logs the migration of the schema
+4. its an ORM, means we can switch to other db provider without changing the backend code
+5. we've Prisma studio - simple web based GUI to check the tables etc.
+6. it gives type safety - if we are using typescript then the response of a query will have the type in it, we don't to explictly define it
+   and that gives us autocompletions also
+    
+setting up prisma with nodejs
+1. npm install prisma --save-dev
+2. npx prisma init --datasource-provider postgres

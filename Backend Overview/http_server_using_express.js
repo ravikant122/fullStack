@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const app = express()
 app.use(bodyParser.json()) // now express instance(app) can parse body of req object
 
-const port = process.env.PORT || 3000 // here we've access a env variable
+const port = env("PORT") || 3000 // here we've access a env variable
 // they are system variable with some value and their key will be used anywhere
 // benifit of this are, we need to change them at only one place
 // general use case is like production URL, PORT no, execution mode - something that is used everywhere and doesn't change often

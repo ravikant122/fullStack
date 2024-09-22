@@ -90,3 +90,7 @@ function printFirstElement(arr) {
 console.log(printFirstElement([1, 2, 3]));
 console.log(printFirstElement(["ravi", "kant", 3]));
 console.log(printFirstElement([1.23, 2.12, 3]));
+const hii = () => {
+    return "hiii";
+};
+console.log(hii() + " adfaa afs");

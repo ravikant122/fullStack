@@ -1,0 +1,34 @@
+Deployment
+In the old days, to make a website live, to have to buy servers machines and if very less requests are there then those machines
+are useless
+
+then came cloud computing, we can deploy our code on the cloud platforms and they gave some fixed virtual machines
+but problem with that is if request are very few then the VMs are wasted and we still pay for those VMs
+
+Serverless cloud platforms
+1. AWS lambda
+2. GCP
+3. Cloudflare
+
+Serverless means we pay on the basis of no. of requests and they will assign/remove the VMs as the requests comes
+so we just have to write code and then the provider will take care of auto-scaling
+
+Pros:
+1. cost is very less in the begining
+2. we don't have to take care of the auto-scaling
+
+Cons:
+1. as the no of requests becomes more, the cost increases too much
+2. cold-start -> in the begining, when our code doesn't have any VM assigned, it takes a little bit time for provide to assign 
+   some VMs
+
+Solution for Cold start
+1. keep 1 server - pay for this server always
+2. keep ping in every some seconds, so that you always have 1 server alive
+
+Cloudflare - Free of cost
+but for this to use, first we've to create a clouflare project
+
+
+AWS -  amazon web services
+EC2 - elastic compute version 2 (its nothing but a machine which is flexible to scale)

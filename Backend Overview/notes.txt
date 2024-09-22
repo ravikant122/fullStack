@@ -95,8 +95,43 @@ setting up prisma with nodejs
 1. npm install prisma --save-dev
 2. npx prisma init --datasource-provider postgres
 
-
 if we are doing a validation using zod then we may need its type for the typescript
 for that we can use
 type schemaType = z.infer<typeof zodSchema>
 
+we've to do the validation in backend because someone can change your request in between
+
+Common Module
+lets say we have to validation in backend, for that we've created a zod schema and infer its type
+now we want to pass the body from frontend, so there we need to create some type for it
+either we created same type as backend or if we can use same zod schema type in frontend too
+
+import zod schema type from backend is not a good thing because we can by mistake import the other things which doesn't run in browser
+also we cannot create zod schema in the frontend and import in the backend because some frontend things doesn't run in the node
+and if we import in frontend from backend and vice-vesra then it will create  a circular dependency which requires first  to compile the backend and then frontend and then again compile the backend which is not good
+
+so we can create a common module which will be used by both backend and frontend
+so we define zod schema type in  common module and import it in both backend and frontend
+
+but we can't really import common module directly using a relative path like
+import { loginSchemaType } = require('../../../common/index)
+because giving relative path is not a good for a module that is outside of your module
+
+now, we've to push our module to npm (like make it a package)  and then import it in both backend and frontend
+when we are creating the common module, its in the typescript and we don't wanna push it
+so we compile it and create js files for that and then push our module
+
+when we gonna import the zod schema type from common module(imported using npm), it will say that
+the zodSchema type doesn't have a type because the common package(after uploading it to npm and then installing it)
+only contains js files and no types, so we've to create a type declaration for the common module
+type declaration is file.d.ts  which is used by typescript to know the types of the module
+for this to be generated, we've to make 'declaration': true in typescript config
+and then simply compile the common module, publish it and again install it and then use it
+
+there's a problem in publishing your module to npm because its gonna expose your code, and we can't do it in the company
+so we use monorepo, there are packages like turborepo,  yarn workspaces etc. which allows us to create a monorepo
+
+
+Imp thing about validation - frontend doesn't really do the validation, it just do top-level checking for the input fields
+and it just sends data to backend, so we can do validation using zod in frontend but then if user wants then it can alter the data of the request
+so we can't really trust the frontend validation, we've to do it in backend also.

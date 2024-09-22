@@ -94,3 +94,9 @@ benifit of prisma
 setting up prisma with nodejs
 1. npm install prisma --save-dev
 2. npx prisma init --datasource-provider postgres
+
+
+if we are doing a validation using zod then we may need its type for the typescript
+for that we can use
+type schemaType = z.infer<typeof zodSchema>
+

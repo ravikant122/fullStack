@@ -29,146 +29,149 @@
 
 let x: number = 1;
 // x = "ravi" // this line will give you error = type string is not assignable to type number
-console.log(x)
+console.log(x);
 
-// what if we don't give type and don't assign the value 
+// what if we don't give type and don't assign the value
 let y;
-y = 1
-y = "ravi"
-console.log(y)
+y = 1;
+y = "ravi";
+console.log(y);
 // we can assign anything
 
 // what if we don't give type but assign a value
 let z = 1;
 // z = "ravi"
-console.log(z)
+console.log(z);
 // it auto detect the type of value assigned, so we can't give other types
 
 // type to arguments in a function
-function greet (name: string) {
-	console.log("hello world" + name)
+function greet(name: string) {
+  console.log("hello world" + name);
 }
-greet("ravi") // if we give another type here, it will give error
+greet("ravi"); // if we give another type here, it will give error
 
 // type to a function
 function sumUp(a: number, b: number): void {
-	console.log(a+b)
+  console.log(a + b);
 }
-sumUp(1,2)
+sumUp(1, 2);
 
 // type to callback function
 function sumUpAfterOneSecond(fn: (a: number, b: number) => void) {
-	setTimeout(() => {
-		fn(2,3)
-	}, 1000);
+  setTimeout(() => {
+    fn(2, 3);
+  }, 1000);
 }
-sumUpAfterOneSecond(sumUp)
+sumUpAfterOneSecond(sumUp);
 
 // interface = type to object
 interface User {
-	firstName: string,
-	lastName: string,
-	age: number
+  firstName: string;
+  lastName: string;
+  age: number;
 }
 
 function isLegal(user: User) {
-	return user.age > 18
+  return user.age > 18;
 }
-console.log(isLegal({ firstName: "ravi", lastName: "kant", age: 20})) // we cannot left any key or add a new key
+console.log(isLegal({ firstName: "ravi", lastName: "kant", age: 20 })); // we cannot left any key or add a new key
 
 // instead of creating interface, we can just give type in the function argument
-function isLegal2(user : { // problem with this is, we've to do this everytime someone use User
-	firstName: string;			 // with interface, we just have to define it once
-	lastName: string;
-	age: number;
+function isLegal2(user: {
+  // problem with this is, we've to do this everytime someone use User
+  firstName: string; // with interface, we just have to define it once
+  lastName: string;
+  age: number;
 }) {
-	return user.age > 18
+  return user.age > 18;
 }
-console.log(isLegal2({ firstName: "ravi", lastName: "kant", age: 20}))
+console.log(isLegal2({ firstName: "ravi", lastName: "kant", age: 20 }));
 
 // implementing interface
 interface Person {
-	name: string;
-	age: string | number; // doesn't matter if we age as string or number
-	greet: (phrase: string) => void;
+  name: string;
+  age: string | number; // doesn't matter if we age as string or number
+  greet: (phrase: string) => void;
 }
 
 interface employeeInterface {
-	name: string, // we cannot give name here a number because then interace teams won't be able to extens Person and this interface
-	department: string
+  name: string; // we cannot give name here a number because then interace teams won't be able to extens Person and this interface
+  department: string;
 }
 
 interface teams extends Person, employeeInterface {
-	getDept: () => void;
+  getDept: () => void;
 }
 
 class Employee implements teams {
-	name: string;
-	age: number;
-	department: string;
-	// we can also create our own variables
-	fullName: string;
-	
-	constructor (name: string, age: number, fullName: string, department: string) {
-		this.name = name;
-		this.age = age;
-		this.fullName = fullName;
-		this.department = department;
-	}
+  name: string;
+  age: number;
+  department: string;
+  // we can also create our own variables
+  fullName: string;
 
-	// we need all the interface's abstract method implemented
-	greet (phrase: string) {
-		console.log(`${phrase} ${this.name}`)
-	}
+  constructor(name: string, age: number, fullName: string, department: string) {
+    this.name = name;
+    this.age = age;
+    this.fullName = fullName;
+    this.department = department;
+  }
 
-	getDept () {
-		console.log(this.department)
-	}
+  // we need all the interface's abstract method implemented
+  greet(phrase: string) {
+    console.log(`${phrase} ${this.name}`);
+  }
 
-	// we can also create our own methods
-	bye () {
-		console.log("bye" + this.fullName)
-	}
+  getDept() {
+    console.log(this.department);
+  }
+
+  // we can also create our own methods
+  bye() {
+    console.log("bye" + this.fullName);
+  }
 }
 
 // types - same use as interface but has some difference
 type Employee2 = {
-	fullName: string;
-	age: number;
-	email?: string; // this means optional, if not provided then it will be undefined(another type in typescript)
-	// we can option in interfaces also means anywhere
-}
+  fullName: string;
+  age: number;
+  email?: string; // this means optional, if not provided then it will be undefined(another type in typescript)
+  // we can option in interfaces also means anywhere
+};
 
-function employeeData (emp: Employee2) {
-	console.log(`name is ${emp.fullName} and age is ${emp.age} and email is ${emp.email}`)
+function employeeData(emp: Employee2) {
+  console.log(
+    `name is ${emp.fullName} and age is ${emp.age} and email is ${emp.email}`
+  );
 }
-employeeData({fullName: "ravikant", age: 18})
+employeeData({ fullName: "ravikant", age: 18 });
 
 // OR - multiple type for a type
-type Salary = string | number
+type Salary = string | number;
 function getSalary(s: Salary) {
-	console.log(s);
+  console.log(s);
 }
 getSalary(101);
-getSalary("101")
+getSalary("101");
 
 // AND - joining multiple type in a type
 type Employee3 = {
-	name: string,
-	startDate: Date
-}
+  name: string;
+  startDate: Date;
+};
 type Manager = {
-	name: string,
-	department: string
-}
-type TeamLead = Employee3 & Manager
+  name: string;
+  department: string;
+};
+type TeamLead = Employee3 & Manager;
 
 const tl: TeamLead = {
-	name: "ravi",
-	startDate: new Date(),
-	department: "SDE"
-}
-console.log(tl)
+  name: "ravi",
+  startDate: new Date(),
+  department: "SDE",
+};
+console.log(tl);
 // when we do AND of types then we can assign same keys different type because after AND
 // then same name key will have type 'never', and we can't give any value to that key
 
@@ -179,33 +182,99 @@ console.log(tl)
 
 // Arrays - just append [] after giving type
 function findMax(arr: number[]) {
-	return Math.max(...arr);
+  return Math.max(...arr);
 }
-console.log(findMax([1,2,3]))
+console.log(findMax([1, 2, 3]));
 
 // we have enums in ts
 enum Week {
-	SUN, // they are nothing but integer, starting from 0, we can also give them values
-	MON,
-	WED
+  SUN, // they are nothing but integer, starting from 0, we can also give them values
+  MON,
+  WED,
 }
-console.log(Week.MON)
+console.log(Week.MON);
 
 function findDay(day: Week) {
-	if (day == Week.SUN) {
-		console.log(`Day is ${Week.SUN}`) // it will print 0
-	} else if (day == Week.MON) {
-		console.log(`Day is ${Week.MON}`) // it will print 1
-	} else {
-		console.log(`Day is ${Week.WED}`) // it will print 2
-	}
+  if (day == Week.SUN) {
+    console.log(`Day is ${Week.SUN}`); // it will print 0
+  } else if (day == Week.MON) {
+    console.log(`Day is ${Week.MON}`); // it will print 1
+  } else {
+    console.log(`Day is ${Week.WED}`); // it will print 2
+  }
 }
-findDay(Week.MON)
+findDay(Week.MON);
 
 // we also have generics in ts
-function printFirstElement<T>(arr : T[]) {
-	return arr[2];
+function printFirstElement<T>(arr: T[]) {
+  return arr[2];
 }
-console.log(printFirstElement<number>([1,2,3])) // we should give type when we call the function
-console.log(printFirstElement(["ravi","kant",3])) // otherwise we can pass any type of value
-console.log(printFirstElement([1.23,2.12,3]))
+console.log(printFirstElement<number>([1, 2, 3])); // we should give type when we call the function
+console.log(printFirstElement(["ravi", "kant", 3])); // otherwise we can pass any type of value
+console.log(printFirstElement([1.23, 2.12, 3]));
+
+// Pick - lets you choose some keys from an interface/type
+interface User2 {
+  id: number;
+  name: string;
+  email: string;
+  createdAt: Date;
+}
+// lets assume we've a req.body and we need some props of it
+// one thing we can do is  to create a new interface and create the needed props in that
+// the thing with this is that  if we ever change the User interface, we need to change the new interface also
+// and we can easily miss that
+// so we use Pick here, which picks the mentioned  props from the User interface
+// good thing about this is, we don't have to change the  new interface if we change the User interface
+// it automatically updates the type
+type UserProfile = Pick<User2, "name" | "email">;
+// change the keys of user2 interface,  it will automatically change that key in UserProfile type
+
+// Partial - lets you  make all the properties of an interface optional
+type partialUser = Partial<User2>;
+
+// readonly - make  all the properties of an interface readonly
+// key's values can change
+// there are two ways we can do this, either mention readonly in front of key or make a type using readonly
+interface User3 {
+  // first way
+  readonly id: number;
+  readonly name: string;
+  readonly email: string;
+  readonly createdAt: Date;
+}
+// second way
+type readonlyUser = Readonly<User2>;
+
+// Record
+// lets say we have a string and we want to create an object with that string as key and
+// value would be an object or some interface/type
+type Emp = {
+  id: number;
+  name: string;
+  post: string;
+};
+// either we can do this
+type Emp1 = {
+  [key: string]: Emp;
+};
+
+const emp: Emp1 = {
+  ravi: {
+    id: 1,
+    name: "ravi",
+    post: "dev",
+  },
+};
+
+// or we can  use Record
+type Emp2 = Record<string, Emp>;
+const emp2: Emp2 = {
+  abhi: {
+    id: 2,
+    name: "abhi",
+    post: "devEng",
+  },
+};
+
+// Map - same as record

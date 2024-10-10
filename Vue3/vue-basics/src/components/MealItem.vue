@@ -71,4 +71,11 @@ const props = defineProps({
   -webkit-box-orient: vertical;
   margin-bottom: 1rem;
 }
+
+/* 
+to clamp the text in 1 line
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+ */
 </style>

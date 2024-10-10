@@ -1,3 +1,7 @@
-export default {
-  meals: 'meal'
+export interface RootState {
+  searchedMeals: []
+}
+
+export const state: RootState = {
+  searchedMeals: []
 }

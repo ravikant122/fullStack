@@ -1,13 +1,13 @@
 import { createStore } from 'vuex'
-import state from './state'
-// import mutations from './mutations'
-// import actions from './actions'
+import { type RootState, state } from './state'
+import { mutations } from './mutations'
+import { actions } from './actions'
 // import getters from './getters'
 
-const store = createStore({
-  state
-  // mutations,
-  // actions,
+const store = createStore<RootState>({
+  state,
+  mutations,
+  actions
   // getters
 })
 
